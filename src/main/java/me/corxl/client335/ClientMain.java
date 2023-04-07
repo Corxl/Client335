@@ -10,6 +10,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 public class ClientMain extends Application {
+    private Client client;
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientMain.class.getResource("login-window.fxml"));
@@ -20,6 +21,7 @@ public class ClientMain extends Application {
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
+
     }
 
     public static void main(String[] args) {
