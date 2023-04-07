@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="668.0" styleClass="main-container" stylesheets="@login/login.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.corxl.client335.LoginWindow">
+   <center>
+      <HBox spacing="10.0" style="-fx-background-radius: 15;" styleClass="accent-container" stylesheets="@login/login.css" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </BorderPane.margin>
+         <children>
+            <VBox prefHeight="506.0" prefWidth="250.0" spacing="10.0">
+               <children>
+                  <VBox spacing="10.0" stylesheets="@login/login.css">
+                     <children>
+                        <StackPane>
+                           <children>
+                              <VBox fx:id="connectInfoBox" alignment="CENTER" prefHeight="249.0" prefWidth="250.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="main-container" stylesheets="@login/login.css">
+                                 <children>
+                                    <Label prefHeight="18.0" prefWidth="210.0" text="Connect To Server" textFill="#cccccc">
+                                       <VBox.margin>
+                                          <Insets bottom="-5.0" top="-15.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="Consolas Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Separator opacity="0.39" prefWidth="200.0" style="-fx-background-color: BLACK;">
+                                       <VBox.margin>
+                                          <Insets bottom="-5.0" left="5.0" right="5.0" top="-5.0" />
+                                       </VBox.margin>
+                                    </Separator>
+                                    <TextField fx:id="ipaddressInput" prefHeight="26.0" prefWidth="180.0" promptText="Ip Address: (192.168.0.1)" styleClass="inputs" stylesheets="@login/login.css">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </TextField>
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <TextField fx:id="portInput" prefHeight="26.0" prefWidth="180.0" promptText="Port: (1337)" styleClass="inputs" stylesheets="@login/login.css">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                          <Button mnemonicParsing="false" onAction="#connectClick" prefHeight="26.0" prefWidth="142.0" styleClass="buttons" stylesheets="@login/login.css" text="Connect">
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                                 </padding>
+                              </VBox>
+                              <Button fx:id="disconnect" mnemonicParsing="false" onAction="#disconnect" prefHeight="26.0" prefWidth="110.0" styleClass="buttons" stylesheets="@login/login.css" text="Disconnect" />
+                           </children>
+                        </StackPane>
+                        <StackPane prefHeight="249.0" prefWidth="250.0" styleClass="main-container" stylesheets="@login/login.css">
+                           <children>
+                              <VBox fx:id="loginInfoBox" alignment="CENTER" prefHeight="191.0" prefWidth="200.0" spacing="10.0">
+                                 <children>
+                                    <Label prefHeight="18.0" prefWidth="210.0" text="Login" textFill="#cccccc">
+                                       <font>
+                                          <Font name="Consolas Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Separator opacity="0.39" prefWidth="200.0" style="-fx-background-color: BLACK;">
+                                       <VBox.margin>
+                                          <Insets bottom="-5.0" left="5.0" right="5.0" top="-5.0" />
+                                       </VBox.margin>
+                                    </Separator>
+                                    <TextField fx:id="usernameInput" onKeyTyped="#usernameInputTyped" prefHeight="26.0" prefWidth="180.0" promptText="Email or Username" styleClass="inputs" stylesheets="@login/login.css">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </TextField>
+                                    <HBox>
+                                       <children>
+                                          <PasswordField fx:id="passwordInput" onKeyTyped="#passwordInputTyped" prefHeight="26.0" prefWidth="209.0" promptText="Password" styleClass="inputs" stylesheets="@login/login.css">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </PasswordField>
+                                          <Label alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#showPassword" prefHeight="30.0" prefWidth="30.0" text="👁" textFill="#303030">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="-30.0" top="-2.0" />
+                                             </HBox.margin>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                             <effect>
+                                                <Glow level="0.58" />
+                                             </effect>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <StackPane alignment="CENTER_LEFT">
+                                       <VBox.margin>
+                                          <Insets bottom="-12.0" top="-12.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label prefHeight="18.0" prefWidth="92.0" styleClass="forgot-password" stylesheets="@login/login.css" text="Forgot Password">
+                                             <StackPane.margin>
+                                                <Insets bottom="5.0" left="5.0" top="5.0" />
+                                             </StackPane.margin>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                             <effect>
+                                                <Glow level="1.0" />
+                                             </effect>
+                                          </Label>
+                                       </children>
+                                    </StackPane>
+                                    <HBox alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <Button id="buttons" focusTraversable="false" mnemonicParsing="false" onMouseClicked="#registerClick" prefHeight="26.0" prefWidth="106.0" style="-fx-background-radius: 25;" styleClass="buttons" stylesheets="@login/login.css" text="Register" textFill="WHITE">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </Button>
+                                          <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#loginClick" prefHeight="26.0" prefWidth="106.0" styleClass="buttons" stylesheets="@login/login.css" text="Login" textFill="WHITE">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutClick" prefHeight="26.0" prefWidth="110.0" styleClass="buttons" stylesheets="@login/login.css" text="Logout">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                              <VBox fx:id="loginInfoBox1" alignment="CENTER" spacing="10.0" visible="false">
+                                 <children>
+                                    <Label prefHeight="18.0" prefWidth="210.0" text="Register" textFill="#cccccc">
+                                       <font>
+                                          <Font name="Consolas Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Separator opacity="0.39" prefWidth="200.0" style="-fx-background-color: BLACK;">
+                                       <VBox.margin>
+                                          <Insets bottom="-5.0" left="5.0" right="5.0" top="-5.0" />
+                                       </VBox.margin>
+                                    </Separator>
+                                    <TextField fx:id="usernameInput1" onKeyTyped="#usernameInputTyped" prefHeight="26.0" prefWidth="206.0" promptText="Email" styleClass="inputs" stylesheets="@login/login.css">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </TextField>
+                                    <HBox>
+                                       <VBox.margin>
+                                          <Insets bottom="-5.0" left="5.0" top="-10.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label text="Invalid email" textFill="#d41e1e">
+                                             <font>
+                                                <Font name="Consolas Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <TextField fx:id="registerUsername" onKeyTyped="#usernameInputTyped" prefHeight="26.0" prefWidth="206.0" promptText="Username" styleClass="inputs" stylesheets="@login/login.css">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <VBox.margin>
+                                          <Insets bottom="-5.0" left="5.0" top="-10.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label text="Invalid username" textFill="#d41e1e">
+                                             <font>
+                                                <Font name="Consolas Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <PasswordField fx:id="registerPassword" onKeyTyped="#passwordInputTyped" prefHeight="26.0" prefWidth="206.0" promptText="Password" styleClass="inputs" stylesheets="@login/login.css">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </PasswordField>
+                                          <Label alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#showPassword" prefHeight="30.0" prefWidth="30.0" text="👁" textFill="#303030">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="-30.0" top="-2.0" />
+                                             </HBox.margin>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                             <effect>
+                                                <Glow level="0.58" />
+                                             </effect>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <VBox.margin>
+                                          <Insets bottom="-10.0" left="5.0" top="-10.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label text="Invalid password format" textFill="#d41e1e">
+                                             <font>
+                                                <Font name="Consolas Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <PasswordField fx:id="registerConfirmPassword" onKeyTyped="#passwordInputTyped" prefHeight="26.0" prefWidth="206.0" promptText="Confirm password" styleClass="inputs" stylesheets="@login/login.css">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </PasswordField>
+                                    <HBox>
+                                       <VBox.margin>
+                                          <Insets bottom="-5.0" left="5.0" top="-10.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label text="Passwords do not match" textFill="#d41e1e">
+                                             <font>
+                                                <Font name="Consolas Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <StackPane alignment="CENTER_LEFT">
+                                       <VBox.margin>
+                                          <Insets bottom="-12.0" top="-12.0" />
+                                       </VBox.margin>
+                                    </StackPane>
+                                    <Separator opacity="0.39" prefWidth="200.0" style="-fx-background-color: BLACK;">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Separator>
+                                    <HBox alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <Button focusTraversable="false" mnemonicParsing="false" onAction="#registerAccount" onMouseClicked="#loginClick" prefHeight="26.0" prefWidth="106.0" styleClass="buttons" stylesheets="@login/login.css" text="Register" textFill="WHITE">
+                                             <font>
+                                                <Font name="Consolas" size="12.0" />
+                                             </font>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </Button>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="-5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                           </padding>
+                        </StackPane>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="508.0" prefWidth="348.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="main-container" stylesheets="@login/login.css">
+               <children>
+                  <HBox />
+               </children>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </HBox>
+   </center>
+   <top>
+      <HBox fx:id="top" alignment="TOP_RIGHT" prefHeight="5.0" prefWidth="322.0" styleClass="top-pane" stylesheets="@login/login.css" BorderPane.alignment="TOP_RIGHT">
+         <children>
+            <Label prefHeight="18.0" prefWidth="617.0" text="Client" textFill="#b1b1b1">
+               <font>
+                  <Font name="Consolas Bold" size="15.0" />
+               </font>
+            </Label>
+            <Button focusTraversable="false" mnemonicParsing="false" onMouseClicked="#onMinimize" styleClass="exit-button" stylesheets="@login/login.css" text="_" textFill="WHITE">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button contentDisplay="TOP" focusTraversable="false" graphicTextGap="0.0" mnemonicParsing="false" onMouseClicked="#onExitClick" styleClass="exit-button" stylesheets="@login/login.css" text="✖" textFill="WHITE">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </HBox>
+   </top>
+</BorderPane>

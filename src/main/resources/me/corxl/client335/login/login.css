@@ -1,0 +1,56 @@
+.root {
+    --main-forgot-password-color: #4883FF;
+}
+.main-container {
+    -fx-background-color: linear-gradient(to top left, rgba(8,52,76,1) 0%, rgba(13,74,107,1) 100%);
+    -fx-background-radius: 15px;
+}
+.accent-container {
+    -fx-background-color: linear-gradient(to top right, rgba(13,46,73,1) 0%, rgba(8,28,44,1) 100%);
+}
+.buttons {
+    -fx-background-color: linear-gradient(rgba(134,134,134,1) 0%, rgba(92,92,92,1) 100%);
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+}
+.inputs {
+    -fx-text-fill: BLACK;
+    -fx-prompt-text-fill: #4d4d4d;
+    -fx-background-radius: 25px;
+    -fx-background-color: #868686;
+
+}
+.buttons:hover {
+    -fx-background-color: linear-gradient(rgba(70,70,70,1) 0%, rgba(92,92,92,1) 100%);
+}
+.buttons:pressed {
+    -fx-background-color: linear-gradient(rgba(29,29,29,1) 0%, rgba(47,47,47,0.01) 100%);;
+}
+.forgot-password {
+    -fx-text-fill: #4883FF;
+}
+.forgot-password:hover {
+    -fx-underline: true;
+    -fx-text-fill: #2262e9;
+}
+.forgot-password:pressed {
+    -fx-text-fill: #355cad;
+}
+.exit-button {
+    -fx-background-color: transparent;
+    -fx-border-style: SOLID NONE SOLID SOLID;
+    -fx-border-color: GRAY;
+    -fx-border-width: 1px;
+}
+.exit-button:pressed {
+    -fx-background-color: linear-gradient(rgba(29,29,29,1) 0%, rgba(47,47,47,0.01) 100%);;
+}
+.top-pane {
+    -fx-background-color: linear-gradient(to top, rgba(14,49,75,1) 0%, rgba(31,94,143,1) 100%);
+}
+.exit-button:hover {
+    -fx-background-color: #134063;
+}
+.exit-button:pressed {
+    -fx-background-color: #0e314b;
+}
