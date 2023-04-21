@@ -5,8 +5,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="668.0" styleClass="main-container" stylesheets="@login/login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.corxl.client335.LoginWindow">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="668.0" styleClass="main-container" stylesheets="@login/login.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.corxl.client335.LoginWindow">
    <center>
       <HBox spacing="10.0" style="-fx-background-radius: 15;" styleClass="accent-container" stylesheets="@login/login.css" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -27,7 +30,7 @@
                      <children>
                         <StackPane>
                            <children>
-                              <VBox fx:id="connectInfoBox" alignment="CENTER" prefHeight="249.0" prefWidth="250.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="main-container" stylesheets="@login/login.css">
+                              <VBox fx:id="connectInfoBox" alignment="CENTER" prefHeight="249.0" prefWidth="250.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="main-container" stylesheets="@login/login.css" visible="false">
                                  <children>
                                     <Label prefHeight="18.0" prefWidth="210.0" text="Connect To Server" textFill="#cccccc">
                                        <VBox.margin>
@@ -66,7 +69,33 @@
                                     <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                                  </padding>
                               </VBox>
-                              <Button fx:id="disconnect" mnemonicParsing="false" onAction="#disconnect" prefHeight="26.0" prefWidth="110.0" styleClass="buttons" stylesheets="@login/login.css" text="Disconnect" />
+                              <Button fx:id="disconnect" mnemonicParsing="false" onAction="#disconnect" prefHeight="26.0" prefWidth="110.0" styleClass="buttons" stylesheets="@login/login.css" text="Disconnect" visible="false" />
+                              <VBox fx:id="connnecting" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" visible="false">
+                                 <children>
+                                    <StackPane>
+                                       <children>
+                                          <Label fx:id="connectingLabel" prefHeight="14.0" prefWidth="119.0" text="Connecting..." textFill="WHITE">
+                                             <font>
+                                                <Font name="Consolas Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="35.0" />
+                                       </VBox.margin>
+                                    </StackPane>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="couldNotConnect" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Could not connect." textFill="WHITE">
+                                       <font>
+                                          <Font name="Consolas Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="cncGoBack" mnemonicParsing="false" onAction="#connectGoBack" prefHeight="26.0" prefWidth="122.0" styleClass="buttons" stylesheets="@login/login.css" text="Go back" />
+                                 </children>
+                              </VBox>
                            </children>
                         </StackPane>
                         <StackPane prefHeight="249.0" prefWidth="250.0" styleClass="main-container" stylesheets="@login/login.css">
@@ -288,8 +317,25 @@
                   </VBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="508.0" prefWidth="348.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="main-container" stylesheets="@login/login.css">
+            <VBox fx:id="infoDisplay" alignment="CENTER" prefHeight="508.0" prefWidth="348.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="main-container" stylesheets="@login/login.css">
                <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="304.0" text="Account Info" textFill="WHITE">
+                     <font>
+                        <Font name="Consolas Bold" size="25.0" />
+                     </font>
+                     <effect>
+                        <DropShadow radius="5.92" spread="0.47" width="4.68" />
+                     </effect>
+                  </Label>
+                  <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="390.0" prefWidth="298.0" style="-fx-background-color: rgba(8,52,76,1); -fx-background-radius: 8;" stylesheets="@login/login.css" vbarPolicy="NEVER">
+                     <content>
+                        <TextArea fx:id="notificationBox" editable="false" prefHeight="390.0" prefWidth="296.0" styleClass="transparent-background" stylesheets="@login/login.css" text="asd" wrapText="true">
+                           <font>
+                              <Font name="Consolas Bold" size="12.0" />
+                           </font>
+                        </TextArea>
+                     </content>
+                  </ScrollPane>
                   <HBox />
                </children>
                <padding>

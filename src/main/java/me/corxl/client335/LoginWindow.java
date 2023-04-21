@@ -1,35 +1,46 @@
 package me.corxl.client335;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import me.corxl.client335.user.UserInfo;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.text.ParseException;
 import java.util.ResourceBundle;
 
 public class LoginWindow implements Initializable {
     @FXML
+    private Button cncGoBack;
+
+    @FXML
     private VBox connectInfoBox;
 
     @FXML
+    private Label connectingLabel;
+
+    @FXML
+    private VBox connnecting;
+
+    @FXML
+    private VBox couldNotConnect;
+
+    @FXML
     private Button disconnect;
+
+    @FXML
+    private VBox infoDisplay;
 
     @FXML
     private TextField ipaddressInput;
@@ -39,6 +50,9 @@ public class LoginWindow implements Initializable {
 
     @FXML
     private Button logoutButton;
+
+    @FXML
+    private TextArea notificationBox;
 
     @FXML
     private PasswordField passwordInput;
@@ -86,12 +100,15 @@ public class LoginWindow implements Initializable {
     private String recentPassword = "";
     private boolean loginLine = false;
     private boolean showRegisterPage = false;
+    private Client client;
+    private Thread connectingVisual;
 
     @FXML
     void loginClick(MouseEvent event) {
-        loginLine = !loginLine;
-        toggleLoginOutline(loginLine, passwordInput);
-        toggleLoginOutline(loginLine, usernameInput);
+        client.requestLogin(this.usernameInput.getText(), this.passwordInput.getText());
+//        loginLine = !loginLine;
+//        toggleLoginOutline(loginLine, passwordInput);
+//        toggleLoginOutline(loginLine, usernameInput);
     }
 
     @FXML
@@ -113,9 +130,14 @@ public class LoginWindow implements Initializable {
     }
     @FXML
     void connectClick(ActionEvent event) throws UnknownHostException {
-        System.out.println(InetAddress.getLocalHost().getHostAddress());
+        //System.out.println(InetAddress.getLocalHost().getHostAddress());
         try {
-            new Client(this, ipaddressInput.getText().trim(), Integer.parseInt(portInput.getText().trim())).start();
+            // Working w inputs
+            //this.client = new Client(this, ipaddressInput.getText().trim(), Integer.parseInt(portInput.getText().trim()));
+
+            // Debug input
+            this.client = new Client(this, InetAddress.getLocalHost().getHostAddress(), 4909);
+            this.client.start();
         } catch (NumberFormatException e) {
             // port is not an integer
         }
@@ -124,6 +146,23 @@ public class LoginWindow implements Initializable {
     void clearConnectInputs() {
         ipaddressInput.setText("");
         portInput.setText("");
+    }
+
+    public boolean showUserInfo(String username, String email, String dateOfReg) {
+        if (username == null || email == null || dateOfReg == null) {
+            return false;
+        }
+        String displayFormat = "Username: " + username + "\nEmail: " + email + "\nRegistration Date: " + dateOfReg;
+        Platform.runLater(()->{
+            this.notificationBox.setText(displayFormat);
+        });
+        this.blur(this.infoDisplay, false);
+        return true;
+    }
+
+    public void hideNotificationBox() {
+        this.showUserInfo("PLACEHOLDER", "PLACEHOLDER", "PLACEHOLDER:PLACEHOLDER");
+        this.blur(this.infoDisplay, true);
     }
 
     void clearLoginInputs() {
@@ -139,17 +178,19 @@ public class LoginWindow implements Initializable {
     }
     @FXML
     void logoutClick(ActionEvent event) {
-        toggleLogin(true, true);
+        toggleLogin(false, false);
+        this.client.logout();
     }
     @FXML
-    void disconnect(ActionEvent event) {
+    void disconnect(ActionEvent event) throws IOException {
         toggleConnect(false, false);
         toggleLogin(true, false);
         toggleRegister(true);
+        this.client.disconnect();
     }
     @FXML
     void passwordInputTyped(KeyEvent event) {
-        toggleLoginOutline(false, passwordInput);
+        toggleOutline(false, passwordInput);
         if (!this.showingPassword) {
             this.recentPassword = this.passwordInput.getPromptText() + this.passwordInput.getText();
             this.passwordInput.setPromptText(recentPassword);
@@ -158,7 +199,12 @@ public class LoginWindow implements Initializable {
     }
     @FXML
     void usernameInputTyped(KeyEvent event) {
-        toggleLoginOutline(false, usernameInput);
+        toggleOutline(false, usernameInput);
+    }
+    @FXML
+    void connectGoBack(ActionEvent event) {
+        this.blur(connectInfoBox, false);
+        this.couldNotConnect.setVisible(false);
     }
     void toggleConnect() {
         toggleConnect(!connectInfoBox.isDisable(), !connectInfoBox.isDisable());
@@ -172,6 +218,12 @@ public class LoginWindow implements Initializable {
         showRegisterPage = !toggle;
         registerInfoBox.setVisible(showRegisterPage);
     }
+
+    public void toggleLoginOutline(boolean b) {
+        this.toggleOutline(b, this.usernameInput);
+        this.toggleOutline(b, this.passwordInput);
+    }
+
 
     private void blur(Node node, boolean enableBlur) {
         node.setDisable(enableBlur);
@@ -187,16 +239,16 @@ public class LoginWindow implements Initializable {
         logoutButton.setVisible(hideButton);
     }
 
-    void toggleLoginOutline(boolean toggle, TextField field) {
-//        if (toggle) {
-//            field.setStyle("" +
-//                    "-fx-border-color: RED;" +
-//                    "-fx-border-radius: 15px;");
-//        } else {
-//            field.setStyle("" +
-//                    "-fx-border-color: TRANSPARENT;" +
-//                    "-fx-border-radius: 15px;");
-//        }
+    void toggleOutline(boolean toggle, TextField field) {
+        if (toggle) {
+            field.setStyle("" +
+                    "-fx-border-color: RED;" +
+                    "-fx-border-radius: 15px;");
+        } else {
+            field.setStyle("" +
+                    "-fx-border-color: TRANSPARENT;" +
+                    "-fx-border-radius: 15px;");
+        }
     }
 
     @Override
@@ -217,8 +269,29 @@ public class LoginWindow implements Initializable {
         logoutButton.setVisible(false);
         disconnect.setVisible(false);
         registerInfoBox.setVisible(false);
+        this.connectInfoBox.setVisible(true);
+        this.couldNotConnect.setVisible(false);
+        this.connnecting.setVisible(false);
         // boolean[] input retrieved from server once user tries to register a new account.
         regPageErrors(new boolean[]{false, false, false, false}, false);
+        String conn = "Connecting";
+        this.connectingVisual = new Thread(()->{
+            long speed = 500L;
+            int dotNum = 1;
+            while (true) {
+                try {
+                    Thread.sleep(speed);
+                    dotNum = dotNum++ >= 3 ? 0 : dotNum;
+                    int tempDotNum = dotNum;
+                    Platform.runLater(()->{
+                        this.connectingLabel.setText(conn + ".".repeat(tempDotNum));
+                    });
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        });
+        this.hideNotificationBox();
 
     }
 
@@ -270,7 +343,6 @@ public class LoginWindow implements Initializable {
 
     @FXML
     void passChanged(KeyEvent event) {
-        System.out.println("?????");
         if (!this.showingPassword) {
             this.recentPassword = this.passwordInput.getPromptText() + this.passwordInput.getText();
             this.passwordInput.setPromptText(recentPassword);
@@ -285,5 +357,37 @@ public class LoginWindow implements Initializable {
 
     public void registerGoBack(ActionEvent actionEvent) {
         toggleRegister(true);
+    }
+
+    public void toggleConnecting(boolean b1, boolean b) throws InterruptedException {
+        String conn = "Connecting";
+        Platform.runLater(()->{
+            this.connectingLabel.setText(conn);
+        });
+        new Thread(()->{
+            synchronized (this.connectingVisual) {
+                try {
+                    if (b1) {
+                        try {
+                            this.connectingVisual.start();
+                        } catch (Exception ignore){}
+                        try {
+                            this.connectingVisual.notify();
+                        } catch (Exception ignore){}
+
+                    } else {
+                        this.connectingVisual.wait();
+                    }
+                } catch (InterruptedException ignore) {}
+            }
+        }).start();
+        System.out.println("112");
+        this.connnecting.setVisible(b1);
+        this.blur(connectInfoBox, b);
+    }
+
+    public void toggleCannotConnect(boolean b) {
+        this.connnecting.setVisible(!b);
+        this.couldNotConnect.setVisible(b);
     }
 }

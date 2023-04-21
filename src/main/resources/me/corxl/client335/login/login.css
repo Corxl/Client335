@@ -8,6 +8,10 @@
 .accent-container {
     -fx-background-color: linear-gradient(to top right, rgba(13,46,73,1) 0%, rgba(8,28,44,1) 100%);
 }
+.transparent-background {
+    -fx-text-fill: #f9f9ff;
+    -fx-background-color: TRANSPARENT;
+}
 .buttons {
     -fx-background-color: linear-gradient(rgba(134,134,134,1) 0%, rgba(92,92,92,1) 100%);
     -fx-background-radius: 25px;
@@ -18,10 +22,32 @@
     -fx-prompt-text-fill: #4d4d4d;
     -fx-background-radius: 25px;
     -fx-background-color: #868686;
+}
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
 
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+.info-tab .scroll-pane .content {
+    -fx-text-fill: #f9f9ff;
+    -fx-background-color: TRANSPARENT;
+    -fx-background-radius: 8px;
+}
+.scroll-pane > .viewport {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: #141417;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
 }
 .buttons:hover {
     -fx-background-color: linear-gradient(rgba(70,70,70,1) 0%, rgba(92,92,92,1) 100%);
+    -fx-cursor: HAND;
 }
 .buttons:pressed {
     -fx-background-color: linear-gradient(rgba(29,29,29,1) 0%, rgba(47,47,47,0.01) 100%);;
