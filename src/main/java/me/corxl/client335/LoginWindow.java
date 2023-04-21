@@ -124,9 +124,7 @@ public class LoginWindow implements Initializable {
 
     @FXML
     void registerClick(ActionEvent event) {
-        System.out.println("???");
         toggleRegister(showRegisterPage);
-        System.out.println("???2");
     }
     @FXML
     void connectClick(ActionEvent event) throws UnknownHostException {
@@ -381,7 +379,6 @@ public class LoginWindow implements Initializable {
                 } catch (InterruptedException ignore) {}
             }
         }).start();
-        System.out.println("112");
         this.connnecting.setVisible(b1);
         this.blur(connectInfoBox, b);
     }

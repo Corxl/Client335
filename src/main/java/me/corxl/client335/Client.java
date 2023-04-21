@@ -26,18 +26,13 @@ public class Client extends Thread {
     @Override
     public void run() {
         try {
-            System.out.println("Toggled connect to true");
             WINDOW.toggleConnecting(true, true);
             socket = new Socket();
             socket.connect(new InetSocketAddress(ip, DEFAULT_PORT), TIMEOUT);
-            System.out.println("Connected to server.");
-            System.out.println("Toggled connect to false");
             WINDOW.toggleConnecting(false, false);
             WINDOW.toggleConnect();
             WINDOW.toggleLogin();
         } catch (IOException | InterruptedException e) { // disconnected from server or error.
-            // window.connectionError()
-            System.out.println("Could not connect to server...");
             WINDOW.toggleCannotConnect(true);
         }
     }
@@ -94,7 +89,6 @@ public class Client extends Thread {
 
             Object[] result = (Object[]) receiveData();
             String resultType = (String) result[0];
-            System.out.println(resultType + " <---- result type");
             if (resultType.equals("loginSuccess")) {
                 String resultEmail = ((String) result[1]);
                 String resultUsername = ((String) result[2]);
