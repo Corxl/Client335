@@ -108,4 +108,22 @@ public class Client extends Thread {
             e.printStackTrace();
         }
     }
+    public void requestRegister(String email, String username, String password, String confirmPassword) {
+        this.sendData(new Object[]{"register", email, username, password, confirmPassword});
+        try {
+            Object[] data = (Object[]) this.receiveData();
+            String type = (String) data[0];
+            if (type.equals("registerFailed")) {
+                boolean emailVerification = (boolean) data[1];
+                boolean usernameVerification = (boolean) data[1];
+                boolean passwordVerification = (boolean) data[1];
+                boolean confirmPasswordVerification = (boolean) data[1];
+                this.WINDOW.regPageErrors(new boolean[]{emailVerification, usernameVerification, passwordVerification, confirmPasswordVerification}, true);
+            } else if (type.equals("registerSuccess")) {
+                this.WINDOW.toggleRegisterSuccess(true);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

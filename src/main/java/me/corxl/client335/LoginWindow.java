@@ -40,6 +40,9 @@ public class LoginWindow implements Initializable {
     private Button disconnect;
 
     @FXML
+    private Button goToLogin;
+
+    @FXML
     private VBox infoDisplay;
 
     @FXML
@@ -85,6 +88,9 @@ public class LoginWindow implements Initializable {
     private PasswordField registerPassword;
 
     @FXML
+    private VBox registerSuccess;
+
+    @FXML
     private TextField registerUsername;
 
     @FXML
@@ -106,22 +112,16 @@ public class LoginWindow implements Initializable {
     @FXML
     void loginClick(MouseEvent event) {
         client.requestLogin(this.usernameInput.getText(), this.passwordInput.getText());
-//        loginLine = !loginLine;
-//        toggleLoginOutline(loginLine, passwordInput);
-//        toggleLoginOutline(loginLine, usernameInput);
     }
-
     @FXML
     void onExitClick(MouseEvent event) {
         stage.hide();
         System.exit(0);
     }
-
     @FXML
     void onMinimize(MouseEvent event) {
         stage.setIconified(true);
     }
-
     @FXML
     void registerClick(ActionEvent event) {
         toggleRegister(showRegisterPage);
@@ -140,39 +140,6 @@ public class LoginWindow implements Initializable {
             // port is not an integer
         }
 
-    }
-    void clearConnectInputs() {
-        ipaddressInput.setText("");
-        portInput.setText("");
-    }
-
-    public boolean showUserInfo(String username, String email, String dateOfReg) {
-        if (username == null || email == null || dateOfReg == null) {
-            return false;
-        }
-        String displayFormat = "Username: " + username + "\nEmail: " + email + "\nRegistration Date: " + dateOfReg;
-        Platform.runLater(()->{
-            this.notificationBox.setText(displayFormat);
-        });
-        this.blur(this.infoDisplay, false);
-        return true;
-    }
-
-    public void hideNotificationBox() {
-        this.showUserInfo("PLACEHOLDER", "PLACEHOLDER", "PLACEHOLDER:PLACEHOLDER");
-        this.blur(this.infoDisplay, true);
-    }
-
-    void clearLoginInputs() {
-        usernameInput.setText("");
-        passwordInput.setText("");
-    }
-
-    void clearRegisterInputs() {
-        registerUsername.setText("");
-        registerPassword.setText("");
-        registerConfirmPassword.setText("");
-        registerEmail.setText("");
     }
     @FXML
     void logoutClick(ActionEvent event) {
@@ -204,6 +171,49 @@ public class LoginWindow implements Initializable {
         this.blur(connectInfoBox, false);
         this.couldNotConnect.setVisible(false);
     }
+    @FXML
+    void passChanged(KeyEvent event) {
+        if (!this.showingPassword) {
+            this.recentPassword = this.passwordInput.getPromptText() + this.passwordInput.getText();
+            this.passwordInput.setPromptText(recentPassword);
+            this.passwordInput.setText("");
+        }
+
+    }
+    @FXML
+    void showPassword(MouseEvent event) {
+        showPassword(this.showingPassword);
+        showingPassword = !showingPassword;
+    }
+    void clearConnectInputs() {
+        ipaddressInput.setText("");
+        portInput.setText("");
+    }
+    public boolean showUserInfo(String username, String email, String dateOfReg) {
+        if (username == null || email == null || dateOfReg == null) {
+            return false;
+        }
+        String displayFormat = "Username: " + username + "\nEmail: " + email + "\nRegistration Date: " + dateOfReg;
+        Platform.runLater(()->{
+            this.notificationBox.setText(displayFormat);
+        });
+        this.blur(this.infoDisplay, false);
+        return true;
+    }
+    public void hideNotificationBox() {
+        this.showUserInfo("PLACEHOLDER", "PLACEHOLDER", "PLACEHOLDER:PLACEHOLDER");
+        this.blur(this.infoDisplay, true);
+    }
+    void clearLoginInputs() {
+        usernameInput.setText("");
+        passwordInput.setText("");
+    }
+    void clearRegisterInputs() {
+        registerUsername.setText("");
+        registerPassword.setText("");
+        registerConfirmPassword.setText("");
+        registerEmail.setText("");
+    }
     void toggleConnect() {
         toggleConnect(!connectInfoBox.isDisable(), !connectInfoBox.isDisable());
     }
@@ -216,13 +226,10 @@ public class LoginWindow implements Initializable {
         showRegisterPage = !toggle;
         registerInfoBox.setVisible(showRegisterPage);
     }
-
     public void toggleLoginOutline(boolean b) {
         this.toggleOutline(b, this.usernameInput);
         this.toggleOutline(b, this.passwordInput);
     }
-
-
     private void blur(Node node, boolean enableBlur) {
         node.setDisable(enableBlur);
         GaussianBlur blur = new GaussianBlur();
@@ -236,7 +243,6 @@ public class LoginWindow implements Initializable {
         blur(loginInfoBox, toggle);
         logoutButton.setVisible(hideButton);
     }
-
     void toggleOutline(boolean toggle, TextField field) {
         if (toggle) {
             field.setStyle("" +
@@ -248,7 +254,6 @@ public class LoginWindow implements Initializable {
                     "-fx-border-radius: 15px;");
         }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         top.setOnMousePressed(event -> {
@@ -290,10 +295,10 @@ public class LoginWindow implements Initializable {
             }
         });
         this.hideNotificationBox();
+        this.registerSuccess.setVisible(false);
 
     }
-
-    private void regPageErrors(boolean[] enableList, boolean syncColors) {
+    public void regPageErrors(boolean[] enableList, boolean syncColors) {
         regInvalidEmail.setVisible(enableList[0]);
 
         regInvalidUsername.setVisible(enableList[1]);
@@ -304,20 +309,13 @@ public class LoginWindow implements Initializable {
         // if enableList[x] == true, highlight in green, false highlight in false
 
         if (syncColors) {
-            registerEmail.setStyle((!enableList[0] ? "-fx-border-color: #2bbd4b;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
-            registerUsername.setStyle((!enableList[1] ? "-fx-border-color: #2bbd4b;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
-            registerPassword.setStyle((!enableList[2] ? "-fx-border-color: #2bbd4b;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
-            registerConfirmPassword.setStyle((!enableList[3] ? "-fx-border-color: #2bbd4b;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
+            registerEmail.setStyle((!enableList[0] ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
+            registerUsername.setStyle((!enableList[1] ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
+            registerPassword.setStyle((!enableList[2] ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
+            registerConfirmPassword.setStyle((!enableList[3] ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
         }
 
     }
-
-    @FXML
-    void showPassword(MouseEvent event) {
-        showPassword(this.showingPassword);
-        showingPassword = !showingPassword;
-    }
-
     void showPassword(boolean toggle) {
         if (toggle) {
             if (this.passwordInput.getText().length() < 1)
@@ -334,29 +332,28 @@ public class LoginWindow implements Initializable {
             this.passwordInput.positionCaret(this.passwordInput.getText().length());
         }
     }
-
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
-    @FXML
-    void passChanged(KeyEvent event) {
-        if (!this.showingPassword) {
-            this.recentPassword = this.passwordInput.getPromptText() + this.passwordInput.getText();
-            this.passwordInput.setPromptText(recentPassword);
-            this.passwordInput.setText("");
-        }
-
-    }
-
     public void registerAccount(ActionEvent actionEvent) {
-
+        String email = registerEmail.getText();
+        String username = registerUsername.getText();
+        String password = registerPassword.getText();
+        String confirmPassword = registerConfirmPassword.getText();
+        if (!password.equals(confirmPassword)) {
+            this.regPageErrors(new boolean[]{false, false, true, true}, true);
+            return;
+        }
+        this.client.requestRegister(email, username, password, confirmPassword);
     }
-
     public void registerGoBack(ActionEvent actionEvent) {
         toggleRegister(true);
+        toggleRegisterSuccess(false);
     }
-
+    public void toggleRegisterSuccess(boolean b) {
+        this.registerSuccess.setVisible(b);
+        this.blur(this.registerInfoBox, b);
+    }
     public void toggleConnecting(boolean b1, boolean b) throws InterruptedException {
         String conn = "Connecting";
         Platform.runLater(()->{
@@ -382,9 +379,20 @@ public class LoginWindow implements Initializable {
         this.connnecting.setVisible(b1);
         this.blur(connectInfoBox, b);
     }
-
     public void toggleCannotConnect(boolean b) {
         this.connnecting.setVisible(!b);
         this.couldNotConnect.setVisible(b);
     }
+
+
+
+
+
+
+
+
+
+
+
+
 }
