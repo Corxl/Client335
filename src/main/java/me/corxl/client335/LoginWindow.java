@@ -275,8 +275,14 @@ public class LoginWindow implements Initializable {
         this.connectInfoBox.setVisible(true);
         this.couldNotConnect.setVisible(false);
         this.connnecting.setVisible(false);
+
+        this.regInvalidEmail.setVisible(false);
+        this.regInvalidUsername.setVisible(false);
+        this.regInvalidPasswordFormat.setVisible(false);
+        this.regMatchPassword.setVisible(false);
+
         // boolean[] input retrieved from server once user tries to register a new account.
-        regPageErrors(new boolean[]{false, false, false, false}, false);
+        regPageErrors(new String[]{null, null, null, null}, false);
         String conn = "Connecting";
         this.connectingVisual = new Thread(()->{
             long speed = 500L;
@@ -298,21 +304,29 @@ public class LoginWindow implements Initializable {
         this.registerSuccess.setVisible(false);
 
     }
-    public void regPageErrors(boolean[] enableList, boolean syncColors) {
-        regInvalidEmail.setVisible(enableList[0]);
+    public void regPageErrors(String[] enableList, boolean syncColors) {
+        regInvalidEmail.setVisible(enableList[0] != null);
+        regInvalidEmail.setText(enableList[0] != null ? enableList[0] : "");
 
-        regInvalidUsername.setVisible(enableList[1]);
+        regInvalidUsername.setVisible(enableList[1] != null);
+        regInvalidUsername.setText(enableList[1] != null ? enableList[1] : "");
 
-        regInvalidPasswordFormat.setVisible(enableList[2]);
+        regInvalidPasswordFormat.setVisible(enableList[2] != null);
+        regInvalidPasswordFormat.setText(enableList[2] != null ? enableList[2] : "");
 
-        regMatchPassword.setVisible(enableList[3]);
+        regMatchPassword.setVisible(enableList[3] != null);
+        regMatchPassword.setText(enableList[3] != null ? enableList[3] : "");
+
+        for (String s : enableList) {
+            System.out.println(s);
+        }
         // if enableList[x] == true, highlight in green, false highlight in false
 
         if (syncColors) {
-            registerEmail.setStyle((!enableList[0] ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
-            registerUsername.setStyle((!enableList[1] ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
-            registerPassword.setStyle((!enableList[2] ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
-            registerConfirmPassword.setStyle((!enableList[3] ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
+            registerEmail.setStyle(((enableList[0] == null) ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
+            registerUsername.setStyle(((enableList[1] == null) ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
+            registerPassword.setStyle(((enableList[2] == null) ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
+            registerConfirmPassword.setStyle(((enableList[3] == null) ? "-fx-border-color: transparent;" : "-fx-border-color: #d13030;") + "-fx-border-radius: 25px");
         }
 
     }
@@ -341,7 +355,7 @@ public class LoginWindow implements Initializable {
         String password = registerPassword.getText();
         String confirmPassword = registerConfirmPassword.getText();
         if (!password.equals(confirmPassword)) {
-            this.regPageErrors(new boolean[]{false, false, true, true}, true);
+            this.regPageErrors(new String[]{null, null, null, "Passwords do not match."}, true);
             return;
         }
         this.client.requestRegister(email, username, password, confirmPassword);
@@ -353,6 +367,13 @@ public class LoginWindow implements Initializable {
     public void toggleRegisterSuccess(boolean b) {
         this.registerSuccess.setVisible(b);
         this.blur(this.registerInfoBox, b);
+
+        this.registerEmail.setText("");
+        this.registerUsername.setText("");
+        this.registerPassword.setText("");
+        this.registerConfirmPassword.setText("");
+
+        this.regPageErrors(new String[]{null, null, null, null}, true);
     }
     public void toggleConnecting(boolean b1, boolean b) throws InterruptedException {
         String conn = "Connecting";

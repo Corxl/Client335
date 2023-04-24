@@ -114,11 +114,11 @@ public class Client extends Thread {
             Object[] data = (Object[]) this.receiveData();
             String type = (String) data[0];
             if (type.equals("registerFailed")) {
-                boolean emailVerification = (boolean) data[1];
-                boolean usernameVerification = (boolean) data[1];
-                boolean passwordVerification = (boolean) data[1];
-                boolean confirmPasswordVerification = (boolean) data[1];
-                this.WINDOW.regPageErrors(new boolean[]{emailVerification, usernameVerification, passwordVerification, confirmPasswordVerification}, true);
+                String emailVerification = (String) data[1];
+                String usernameVerification = (String) data[2];
+                String passwordVerification = (String) data[3];
+                String confirmPasswordVerification = (String) data[4];
+                this.WINDOW.regPageErrors(new String[]{emailVerification, usernameVerification, passwordVerification, confirmPasswordVerification}, true);
             } else if (type.equals("registerSuccess")) {
                 this.WINDOW.toggleRegisterSuccess(true);
             }
