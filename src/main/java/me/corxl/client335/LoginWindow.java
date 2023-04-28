@@ -11,8 +11,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import me.corxl.client335.user.UserInfo;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -38,6 +38,12 @@ public class LoginWindow implements Initializable {
 
     @FXML
     private Button disconnect;
+
+    @FXML
+    private VBox forgotPasswordBox;
+
+    @FXML
+    private TextField forgotPasswordEmail;
 
     @FXML
     private Button goToLogin;
@@ -98,7 +104,12 @@ public class LoginWindow implements Initializable {
 
     @FXML
     private TextField usernameInput;
-
+    @FXML
+    private Label forgotPasswordText;
+    @FXML
+    private Label forgotPasswordP;
+    @FXML
+    private PasswordField forgotPasswordNewPassword;
     private double xOffset = 0;
     private double yOffset = 0;
     private Stage stage;
@@ -152,6 +163,7 @@ public class LoginWindow implements Initializable {
         toggleLogin(true, false);
         toggleRegister(true);
         this.client.disconnect();
+        this.hideForgotPassword();
     }
     @FXML
     void passwordInputTyped(KeyEvent event) {
@@ -184,6 +196,14 @@ public class LoginWindow implements Initializable {
     void showPassword(MouseEvent event) {
         showPassword(this.showingPassword);
         showingPassword = !showingPassword;
+    }
+    @FXML
+    void forgotPasswordClick(MouseEvent event) {
+        showForgotPassword();
+    }
+    @FXML
+    void submitForgotPassword(ActionEvent event) throws IOException, ClassNotFoundException {
+        client.requestPasswordReset(this.forgotPasswordEmail.getText(), this.forgotPasswordNewPassword.getText());
     }
     void clearConnectInputs() {
         ipaddressInput.setText("");
@@ -224,7 +244,7 @@ public class LoginWindow implements Initializable {
     void toggleRegister(boolean toggle) {
         loginInfoBox.setVisible(toggle);
         showRegisterPage = !toggle;
-        registerInfoBox.setVisible(showRegisterPage);
+        registerInfoBox.setVisible(!toggle);
     }
     public void toggleLoginOutline(boolean b) {
         this.toggleOutline(b, this.usernameInput);
@@ -235,6 +255,24 @@ public class LoginWindow implements Initializable {
         GaussianBlur blur = new GaussianBlur();
         blur.setRadius(enableBlur ? 10 : 0);
         node.setEffect(blur);
+    }
+    public TextField getForgotPasswordEmail() {
+        return this.forgotPasswordEmail;
+    }
+    public void setForgotPasswordEmailText(String text, boolean isVisible, boolean success) {
+        this.forgotPasswordText.setText(text);
+        this.forgotPasswordText.setTextFill(!success ? Color.RED : Color.GREEN);
+        this.forgotPasswordText.setVisible(isVisible);
+    }
+    public void setForgotPasswordText(String text) {
+        this.forgotPasswordP.setText(text);
+        this.forgotPasswordP.setTextFill(Color.RED);
+        this.forgotPasswordP.setVisible(true);
+    }
+    public void setForgotPasswordEmailText(String text, boolean isVisible) {
+        this.forgotPasswordText.setText(text);
+        this.forgotPasswordText.setTextFill(Color.WHITE);
+        this.forgotPasswordText.setVisible(isVisible);
     }
     void toggleLogin() {
         toggleLogin(!loginInfoBox.isDisable(), !loginInfoBox.isDisable());
@@ -302,7 +340,24 @@ public class LoginWindow implements Initializable {
         });
         this.hideNotificationBox();
         this.registerSuccess.setVisible(false);
+        this.forgotPasswordBox.setVisible(false);
+    }
 
+    private void showForgotPassword() {
+        this.loginInfoBox.setVisible(false);
+        this.registerInfoBox.setVisible(false);
+        this.forgotPasswordBox.setVisible(true);
+    }
+    private void hideForgotPassword() {
+        this.loginInfoBox.setVisible(true);
+        this.registerInfoBox.setVisible(false);
+        this.forgotPasswordBox.setVisible(false);
+        this.registerSuccess.setVisible(false);
+        this.forgotPasswordP.setVisible(false);
+        this.forgotPasswordP.setText("");
+        this.forgotPasswordP.setTextFill(Color.TRANSPARENT);
+        this.forgotPasswordNewPassword.setText("");
+        this.forgotPasswordEmail.setText("");
     }
     public void regPageErrors(String[] enableList, boolean syncColors) {
         regInvalidEmail.setVisible(enableList[0] != null);
@@ -361,8 +416,9 @@ public class LoginWindow implements Initializable {
         this.client.requestRegister(email, username, password, confirmPassword);
     }
     public void registerGoBack(ActionEvent actionEvent) {
-        toggleRegister(true);
-        toggleRegisterSuccess(false);
+        hideForgotPassword();
+        this.setForgotPasswordEmailText("", false);
+        this.toggleOutline(false, this.forgotPasswordEmail);
     }
     public void toggleRegisterSuccess(boolean b) {
         this.registerSuccess.setVisible(b);

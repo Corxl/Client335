@@ -126,4 +126,22 @@ public class Client extends Thread {
             e.printStackTrace();
         }
     }
+
+    public void requestPasswordReset(String email, String password) throws IOException, ClassNotFoundException {
+        this.sendData(new Object[]{"resetPassword", email, password});
+        Object[] data = (Object[]) this.receiveData();
+        boolean emailFound = (boolean) data[0];
+        if (emailFound) {
+            boolean passwordValid = (boolean) data[1];
+            if (!passwordValid)
+                WINDOW.setForgotPasswordText("Invalid password format.");
+            else {
+                WINDOW.setForgotPasswordEmailText("Password reset.", true, true);
+                WINDOW.setForgotPasswordText("");
+            }
+        } else {
+            WINDOW.setForgotPasswordEmailText("Email not found.", true, false);
+            WINDOW.setForgotPasswordText("");
+        }
+    }
 }
