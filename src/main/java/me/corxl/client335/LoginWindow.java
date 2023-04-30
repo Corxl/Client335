@@ -372,9 +372,6 @@ public class LoginWindow implements Initializable {
         regMatchPassword.setVisible(enableList[3] != null);
         regMatchPassword.setText(enableList[3] != null ? enableList[3] : "");
 
-        for (String s : enableList) {
-            System.out.println(s);
-        }
         // if enableList[x] == true, highlight in green, false highlight in false
 
         if (syncColors) {
