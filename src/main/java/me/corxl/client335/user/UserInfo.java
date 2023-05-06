@@ -1,6 +1,6 @@
 package me.corxl.client335.user;
 
-public class UserInfo {
+public class UserInfo { // Could also be converted into a 'record' type of class.
     private final String email, username, timeOfRegistration;
 
     public UserInfo(String email, String username, String timeOfRegistration) {
